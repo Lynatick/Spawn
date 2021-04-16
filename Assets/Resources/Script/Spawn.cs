@@ -24,7 +24,9 @@ public class Spawn : MonoBehaviour
 
     private void Update()
     {
-        if(Time.fixedTime % 2 == 0)
+        //TimeSpan time = DateTime.Now.Second;
+        Debug.Log(DateTime.Now.Second);
+        if(DateTime.Now.Second % 2 == 0)
         {
             Transform target = _points[_currentPoint];
             GameObject gameObject = Instantiate(Template, target.position, Quaternion.identity);
