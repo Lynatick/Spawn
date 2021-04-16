@@ -6,13 +6,13 @@ using UnityEngine;
 public class Spawn : MonoBehaviour
 {
     [SerializeField] private Transform _path;
+    [SerializeField] private int _speedInSecond;
+    [SerializeField] private GameObject _template;
 
     private Transform[] _points;
     
     private int _currentPoint,_currentSecond;
-
-    public GameObject Template;
-
+    
     private void Start()
     {
         _points = new Transform[_path.childCount];
@@ -30,10 +30,10 @@ public class Spawn : MonoBehaviour
 
         if(_currentSecond < nowSecond)
         {
-            if(nowSecond % 2 == 0)
+            if(nowSecond % _speedInSecond == 0)
             {
                 Transform target = _points[_currentPoint];
-                GameObject gameObject = Instantiate(Template, target.position, Quaternion.identity);
+                GameObject gameObject = Instantiate(_template, target.position, Quaternion.identity);
                 _currentPoint++;
 
                 if(_currentPoint >= _points.Length)
