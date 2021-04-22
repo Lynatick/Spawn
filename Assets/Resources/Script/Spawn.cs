@@ -10,15 +10,14 @@ public class Spawn : MonoBehaviour
     [SerializeField] private GameObject _template;
 
     private Transform[] _points;
-    
-    private int _currentPoint,_currentSecond;
-    
+    private int _currentPoint;
+    private float _currentSecond;
+
     private void Start()
     {
         _points = new Transform[_path.childCount];
-        _currentSecond = DateTime.Now.Second;
 
-        for(int i = 0; i < _path.childCount; i++)
+        for (int i = 0; i < _path.childCount; i++)
         {
             _points[i] = _path.GetChild(i);
         }
@@ -26,24 +25,19 @@ public class Spawn : MonoBehaviour
 
     private void Update()
     {
-        int nowSecond = DateTime.Now.Second;
+        _currentSecond += Time.deltaTime;
 
-        if(_currentSecond < nowSecond)
+        if (_currentSecond > _speedInSecond)
         {
-            if(nowSecond % _speedInSecond == 0)
-            {
-                Transform target = _points[_currentPoint];
-                GameObject gameObject = Instantiate(_template, target.position, Quaternion.identity);
-                _currentPoint++;
+            Transform target = _points[_currentPoint];
+            GameObject gameObject = Instantiate(_template, target.position, Quaternion.identity);
+            _currentPoint++;
 
-                if(_currentPoint >= _points.Length)
-                {
-                    _currentPoint = 0;
-                }
-                _currentSecond = nowSecond;
+            if (_currentPoint >= _points.Length)
+            {
+                _currentPoint = 0;
             }
-            if(nowSecond == 59)
-                _currentSecond = -1;
+            _currentSecond = 0;
         }
     }
 }
